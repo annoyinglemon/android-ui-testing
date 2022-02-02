@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/login_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="kurt.lemond.uitesting.ui.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/display_contacts"
+            app:destination="@id/contacts_fragment"
+            app:popUpTo="@id/login_fragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/display_register"
+            app:destination="@id/register_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/contacts_fragment"
+        android:name="kurt.lemond.uitesting.ui.contacts.ContactsFragment"
+        android:label="Contacts"
+        tools:layout="@layout/fragment_contacts" >
+
+        <action
+            android:id="@+id/display_details"
+            app:destination="@id/contact_details_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/contact_details_fragment"
+        android:name="kurt.lemond.uitesting.ui.contact_details.ContactDetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_contact_details">
+
+        <argument
+            android:name="contact"
+            app:argType="kurt.lemond.uitesting.data.entity.Contact" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_fragment"
+        android:name="kurt.lemond.uitesting.ui.register.RegisterFragment"
+        android:label="Register" />
+
+</navigation>

@@ -1,0 +1,99 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "kurt.lemond.uitesting"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        compose = true
+        dataBinding = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation "androidx.multidex:multidex:$multidex_version"
+    implementation "com.github.fueled:reclaim:$reclaim_version"
+
+    //compose
+    implementation "androidx.activity:activity-compose:$compose_activity_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "com.google.android.material:compose-theme-adapter:$compose_version"
+
+    // UI
+    implementation "androidx.activity:activity-ktx:$ui_ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$ui_ktx_version"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_version"
+
+    // lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_ktx_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx_version"
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "javax.annotation:jsr250-api:$jsr_version"
+
+    // dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    testImplementation 'junit:junit:4.+'
+
+    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.ext:truth:$truth_version"
+    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+
+    debugImplementation "androidx.fragment:fragment-testing:$ui_ktx_version"
+
+}
