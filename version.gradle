@@ -1,0 +1,4 @@
+ext {
+    buildVersionCode = { return System.getenv('FUELED_BUILD_NUMBER')?.toInteger() ?: 3 }
+    buildVersionName = { return System.getenv('BUILD_VERSION_NAME') ?: "1.1.1" }
+}

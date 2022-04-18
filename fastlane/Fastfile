@@ -1,0 +1,68 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Run all unit tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Runs all instrumented tests"
+  lane :androidTest do
+    clean
+    gradle(task: "connectedAndroidTest")
+  end
+
+  desc "Build and release new Build"
+  lane :deploy do
+    clean
+    credentials
+    define_versions_android
+    set_app_versions_android
+
+    gradle(
+      task: ENV["BUILD_FORMAT"] == "apk" ? "assemble" : "bundle",
+      build_type: "Release"
+    )
+    if ENV["BUILD_FORMAT"] == "apk"
+      firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        groups: "internal",
+        service_credentials_file: "google-apps-key.json"
+      )
+    else
+      upload_to_play_store(
+        json_key: "google-apps-key.json"
+      )
+    end
+
+    tag
+    create_github_release
+  end
+
+  desc "Delete output files"
+  private_lane :clean do
+    gradle(task: "clean")
+  end
+
+  private_lane :credentials do
+    sh("echo $GOOGLE_CREDENTIALS_ENCODED | base64 --decode > $(echo $PWD)/../google-apps-key.json")
+    sh("echo $KEYSTORE_RELEASE_ENCODED | base64 --decode > $(echo $PWD)/../signing/lemond.keystore")
+  end
+
+end

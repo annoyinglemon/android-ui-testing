@@ -4,17 +4,34 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
+apply from: "../version.gradle"
+
 android {
+    signingConfigs {
+        release {
+            storeFile file('../signing/lemond.keystore')
+            storePassword System.getenv('KEYSTORE_STORE_PASSWORD')
+            keyAlias System.getenv('KEYSTORE_KEY_ALIAS')
+            keyPassword System.getenv('KEYSTORE_KEY_PASSWORD')
+        }
+        debug {
+            storeFile file('../signing/debug.keystore')
+            keyAlias 'androiddebugkey'
+            storePassword 'android'
+            keyPassword 'android'
+        }
+    }
     compileSdk 32
 
     defaultConfig {
         applicationId "kurt.lemond.uitesting"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode buildVersionCode()
+        versionName buildVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,6 +45,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -81,6 +102,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:29.2.1')
+
     testImplementation 'junit:junit:4.+'
 
     androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
@@ -90,6 +114,11 @@ dependencies {
     androidTestImplementation "androidx.test.ext:truth:$truth_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
     kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
+
+    androidTestImplementation("tools.fastlane:screengrab:$screengrab_version") {
+        exclude group: 'com.jraska:falcon'
+    }
+    androidTestImplementation "com.jraska:falcon:$falcon_version"
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")

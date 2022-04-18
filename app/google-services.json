@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500151752975",
+    "project_id": "uitesting-c7bdf",
+    "storage_bucket": "uitesting-c7bdf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500151752975:android:4ff3c6373844602b4cc67a",
+        "android_client_info": {
+          "package_name": "kurt.lemond.uitesting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500151752975-m82gbjjc4tkggf7nomfuct7brj6k9h8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYndQ8Zcl8d_JQbPjiUoPNDevBQ_ndyjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500151752975-m82gbjjc4tkggf7nomfuct7brj6k9h8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

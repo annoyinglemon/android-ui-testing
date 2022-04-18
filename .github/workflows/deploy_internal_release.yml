@@ -1,0 +1,29 @@
+name: Internal Release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      - name: Setup JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Deploy
+        env:
+          FIREBASE_APP_ID: ${{ secrets.GH_FIREBASE_APP_ID }}
+          GOOGLE_CREDENTIALS_ENCODED: ${{ secrets.GH_GOOGLE_CREDENTIALS_B64 }}
+          KEYSTORE_RELEASE_ENCODED: ${{ secrets.GH_KEYSTORE_RELEASE_B64 }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.GH_KEYSTORE_STORE_PASS }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.GH_KEYSTORE_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.GH_KEYSTORE_KEY_PASS }}
+        run: bundle exec fastlane deployToFirebase --env internal_release
