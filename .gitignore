@@ -14,7 +14,10 @@ vcs.xml
 /fastlane/metadata/*
 /fastlane/report.xml
 
-*.keystore
 *.pepk
-/firebase-key.json
+/google-apps-key.json
+/google-apps-key.json.b64
 /secret.properties
+
+/signing/lemond.keystore
+/signing/lemond.keystore.b64

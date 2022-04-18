@@ -17,11 +17,6 @@ default_platform(:android)
 
 platform :android do
 
-  desc "Delete output files"
-    lane :clean do
-      gradle(task: "clean")
-    end
-
   desc "Run all unit tests"
   lane :test do
     gradle(task: "test")
@@ -33,51 +28,41 @@ platform :android do
     gradle(task: "connectedAndroidTest")
   end
 
-  desc "Build Release APK"
-  lane :buildReleaseApk do
+  desc "Build and release new Build"
+  lane :deploy do
     clean
+    credentials
+    define_versions_android
+    set_app_versions_android
+
     gradle(
-      task: "assembleRelease",
+      task: ENV["BUILD_FORMAT"] == "apk" ? "assemble" : "bundle",
       build_type: "Release"
     )
-  end
-
-  desc "Build Release AAB"
-    lane :buildReleaseAab do
-      clean
-      gradle(
-        task: "bundle",
-        build_type: "Release"
+    if ENV["BUILD_FORMAT"] == "apk"
+      firebase_app_distribution(
+        app: ENV["FIREBASE_APP_ID"],
+        groups: "internal",
+        service_credentials_file: "google-apps-key.json"
+      )
+    else
+      upload_to_play_store(
+        json_key: "google-apps-key.json"
       )
     end
 
-  desc "Build debug and AndroidTest APK for screengrab"
-  lane :buildForScreengrab do
-    clean
-    gradle(
-      task: "assemble",
-      build_type: "Debug"
-    )
-    gradle(
-      task: "assemble",
-      build_type: "AndroidTest"
-    )
+    tag
+    create_github_release
   end
 
-  desc "Release a new Beta Build to Firebase App Distribution"
-  lane :deployToFirebase do
-    buildReleaseApk
-    firebase_app_distribution(
-        app: "",
-        groups: "group-two",
-        release_notes: "Lots of amazing new features to test out!"
-    )
+  desc "Delete output files"
+  private_lane :clean do
+    gradle(task: "clean")
   end
 
-  desc "Release a new version to the Google Play"
-  lane :releaseToPlayStore do
-    buildReleaseAab
-    upload_to_play_store
+  private_lane :credentials do
+    sh("echo $GOOGLE_CREDENTIALS_ENCODED | base64 --decode > $(echo $PWD)/../google-apps-key.json")
+    sh("echo $KEYSTORE_RELEASE_ENCODED | base64 --decode > $(echo $PWD)/../signing/lemond.keystore")
   end
 
 end
