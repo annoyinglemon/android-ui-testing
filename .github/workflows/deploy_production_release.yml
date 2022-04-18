@@ -22,5 +22,5 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.GH_KEYSTORE_STORE_PASS }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.GH_KEYSTORE_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.GH_KEYSTORE_KEY_PASS }}
-        run: bundle exec fastlane releaseToPlayStore --env production_release
+        run: bundle exec fastlane deploy --env production_release
 

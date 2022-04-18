@@ -21,9 +21,9 @@ jobs:
       - name: Deploy
         env:
           FIREBASE_APP_ID: ${{ secrets.GH_FIREBASE_APP_ID }}
-          GOOGLE_CREDENTIALS_ENCODED: ${{ secrets.GH_GOOGLE_CREDENTIALS_B64 }}
+          FIREBASE_CREDENTIALS_ENCODED: ${{ secrets.GH_FIREBASE_CREDENTIALS_B64 }}
           KEYSTORE_RELEASE_ENCODED: ${{ secrets.GH_KEYSTORE_RELEASE_B64 }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.GH_KEYSTORE_STORE_PASS }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.GH_KEYSTORE_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.GH_KEYSTORE_KEY_PASS }}
-        run: bundle exec fastlane deployToFirebase --env internal_release
+        run: bundle exec fastlane deploy --env internal_release

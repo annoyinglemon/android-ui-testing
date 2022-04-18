@@ -17,6 +17,9 @@ vcs.xml
 *.pepk
 /google-apps-key.json
 /google-apps-key.json.b64
+/firebase-key.json
+/firebase-key.json.b64
+
 /secret.properties
 
 /signing/lemond.keystore

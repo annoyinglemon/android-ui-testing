@@ -43,7 +43,7 @@ platform :android do
       firebase_app_distribution(
         app: ENV["FIREBASE_APP_ID"],
         groups: "internal",
-        service_credentials_file: "google-apps-key.json"
+        service_credentials_file: "firebase-key.json"
       )
     else
       upload_to_play_store(
@@ -61,7 +61,9 @@ platform :android do
   end
 
   private_lane :credentials do
-    sh("echo $GOOGLE_CREDENTIALS_ENCODED | base64 --decode > $(echo $PWD)/../google-apps-key.json")
+    encoded_key = ENV["BUILD_FORMAT"] == "apk" ? ENV["FIREBASE_CREDENTIALS_ENCODED"] : ENV["GOOGLE_CREDENTIALS_ENCODED"]
+    fileName = ENV["BUILD_FORMAT"] == "apk" ? "firebase-key.json" : "google-apps-key.json"
+    sh("echo #{encoded_key} | base64 --decode > $(echo $PWD)/../#{fileName}")
     sh("echo $KEYSTORE_RELEASE_ENCODED | base64 --decode > $(echo $PWD)/../signing/lemond.keystore")
   end
 
