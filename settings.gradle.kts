@@ -1,2 +1,2 @@
 rootProject.name = "UiTesting"
-include ':app'
+include(":app")
